@@ -177,7 +177,7 @@ int main(int argc, char* argv[])
 
 
     }
-    else { cout << "default settings are set \n"; size = 100; }
+    else { cout << "default settings are set (1-100) \n"; size = 100; }
 
 
     // obrabotka dannih tekushego igroka
@@ -207,8 +207,6 @@ int main(int argc, char* argv[])
     curArr[(arrSize-1)].entSet(tries);
 
     // zapis resultatov
-    
-    
     curArr->record(*curArr, (arrSize));
 
     // sortirovaka spiska

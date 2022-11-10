@@ -91,6 +91,28 @@ public:
 
 };
 
+class PCT : public IStatistics {
+private:
+	double pct90;
+public:
+	double eval() const override {
+		return pct90;
+	}
+		const char* name() const override {
+		return "PCT90";
+	}
+
+
+	PCT() { pct90 = 0; }
+
+	void update(const std::vector <double>& next) override {
+		
+				
+		int placeOfPCT = next.size() * 90/100;
+		pct90 = next[placeOfPCT-1];
+	}
+};
+
 
 class STD : public IStatistics {
 private:
@@ -151,12 +173,28 @@ int main() {
 	for (int n = 0; n < arrayST.size(); n++) {
 		std::cout << arrayST[n] << '\n';
 	}
-
+	//obyavlenie obiejtov klassov
 	Min MN;
 	big MX;
 	Mean XX;
 	STD YY;
+	PCT GG;
 	
+	//sortirovka
+	for (int i = 0; i < (arrayST.size() - 1); i++)
+	{
+		for (int j = (arrayST.size() - 1); j > i; j--)
+		{
+			if (arrayST[j - 1] > arrayST[j])
+			{
+				std::swap(arrayST[j - 1], arrayST[j]);
+			}
+
+		}
+	}
+
+
+
 	MN.update(arrayST);
 	
 	std::cout << MN.name() << " = " << MN.eval() << std::endl;
@@ -173,7 +211,10 @@ int main() {
 
 	std::cout << YY.name() << " = " << YY.eval() << std::endl;
 
-	
+	GG.update(arrayST);
+
+	std::cout << GG.name() << " = " << GG.eval() << std::endl;
+
 
 	return 0;
 }

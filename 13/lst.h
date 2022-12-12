@@ -24,7 +24,7 @@ public:
 
 	void print();
 	void pushfront(V data);
-	MyList();
+	MyList() ;
 	
 	MyList(const MyList& other) {
 		
@@ -37,7 +37,7 @@ public:
 			this->insert(other[i], i);
 			//this->pushback(other[i]);
 		}
-		lst_count++;
+		//lst_count++;
 	}
 
 	MyList& operator =(const MyList& other) {
@@ -89,7 +89,10 @@ public:
 		return *this;
 	}*/
 		
-	~MyList() { while (size) { popfront(); lst_count--; } };
+	~MyList() {
+		while (size) {
+			popfront(); lst_count--;
+	} };
 
 private:
 

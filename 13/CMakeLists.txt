@@ -5,19 +5,21 @@ cmake_minimum_required(VERSION 3.2)
 project(ProjestWithGTest)
 
 
-
 # Lookup for pre-built gtest
 find_package(GTest)
 
 # Main target
 add_executable(
     containers
-    src/main.cpp
-    src/lst.h
-    src/lst_src.h
-    src/posl_c.h
-    src/posl_c_src.h
+    main.cpp
+    lst.h
+    lst_src.h
+    posl_c.h
+    posl_c_src.h
 )
+
+set_target_properties(containers PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+
 
 # Test target
 add_executable(

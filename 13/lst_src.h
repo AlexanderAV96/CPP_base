@@ -6,7 +6,7 @@ template<typename V>
 MyList<V>::MyList() {
 	first = nullptr;
 	size = 0;
-	lst_count++;
+	//lst_count++;
 
 };
 
@@ -26,6 +26,7 @@ void MyList<V>::pushback(V data) {
 	}
 
 	this->size++;
+	lst_count++;
 }
 //template<typename V>
 //V& MyList<V>::operator [](int place) {
@@ -118,6 +119,7 @@ void MyList <V>::popfront() {
 
 	delete tmp;
 	this->size--;
+	lst_count--;
 
 }
 template<typename V>
@@ -138,6 +140,7 @@ void MyList <V>::remove(int place) {
 		delete tmp;
 
 		this->size--;
+		lst_count--;
 	}
 
 
@@ -149,6 +152,7 @@ void MyList<V> ::pushfront(V data) {
 	first = new Link <V>(data, first);
 
 	size++;
+	lst_count++;
 
 }
 
@@ -173,7 +177,7 @@ void MyList<V>::insert(V data, int place) {
 		Link<V>* tmp = new Link <V>(data, prev->next);
 		prev->next = tmp;
 		//prev->next = tmp;
-
+		lst_count++;
 		size++;
 	}
 

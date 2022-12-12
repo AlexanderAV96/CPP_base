@@ -1,15 +1,16 @@
 #include "pch.h"
-#include "..\posl_c.h"
-#include "..\posl_c_src.h"
+#include "../posl_c.h"
+#include "../posl_c_src.h"
 
 TEST(posl_test, push_back_non_INT_test) {
 
-	p_cont <char> testV(10);
+	size_t size = 10;
+	p_cont <char> testV(size);
 	testV.pushback('r');
 
 	EXPECT_EQ(testV[(testV.get_size()-1)], 'r');
 	EXPECT_TRUE(true);
-	//delete [] testV;???
+	
 }
 TEST(posl_test, push_begin_test) {
 	p_cont <int> testV(10);
@@ -28,7 +29,8 @@ TEST(posl_test, push_begin_test) {
 
 
 TEST(posl_test, push_middle_list) {
-	p_cont <int> testV(10);
+	size_t size = 10;
+	p_cont <int> testV(size);
 	testV.pushback(10);
 	testV.pushback(20);
 	testV.insert(40,(testV.get_size()/2+1));
@@ -44,7 +46,8 @@ TEST(posl_test, push_middle_list) {
 
 
 TEST(posl_test, pop_end_test) {
-	p_cont <int> testV(10);
+	size_t size = 10;
+	p_cont <int> testV(size);
 
 	testV.pushback(10);
 	testV.pushback(20);
@@ -62,7 +65,8 @@ TEST(posl_test, pop_end_test) {
 
 
 TEST(posl_test, pop_begin_test) {
-	p_cont <int> testV(10);
+	size_t size = 10;
+	p_cont <int> testV(size);
 
 	testV.pushback(10);
 	testV.pushback(20);
@@ -79,7 +83,8 @@ TEST(posl_test, pop_begin_test) {
 
 
 TEST(posl_test, pop_middle_test) {
-	p_cont <int> testV(10);
+	size_t size = 10;
+	p_cont <int> testV(size);
 	testV.pushback(10);
 	testV.pushback(20);
 	testV.pushback(30);
@@ -94,7 +99,8 @@ TEST(posl_test, pop_middle_test) {
 }
 
 TEST(posl_test, get_size_test) {
-	p_cont <int> testV(10);
+	size_t size = 10;
+	p_cont <int> testV(size);
 	testV.pushback(10);
 	testV.pushback(20);
 	testV.pushback(30);
@@ -107,7 +113,8 @@ TEST(posl_test, get_size_test) {
 }
 
 TEST(posl_test, get_data_test) {
-	p_cont <int> testV(10);
+	size_t size = 10;
+	p_cont <int> testV(size);
 	testV.pushback(10);
 	testV.pushback(20);
 	testV.pushback(30);
@@ -121,11 +128,13 @@ TEST(posl_test, get_data_test) {
 }
 
 TEST(posl_test, constr_copy) {
-	p_cont <int> testV(1);
+	size_t size = 1;
+	p_cont <int> testV(size);
 	testV.pushback(10);
 	testV.pushback(20);
 	testV.pushback(30);
-	p_cont <int> testV2(2);
+	
+	p_cont <int> testV2(size++);
 	testV2 = testV;
 
 	EXPECT_EQ(testV[0], testV2[0]);

@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "..\lst.h"
-#include "..\lst_src.h"
+#include "../lst.h"
+#include "../lst_src.h"
 
 TEST(list_test, push_back_non_INT_test) {
 
@@ -158,7 +158,14 @@ TEST(list_test, copy_const__test) {
 	EXPECT_EQ(testL[2], testL[2]);
 	EXPECT_TRUE(true);
 
+	testL.popfront();
+	testL.popfront();
+	testL.popfront();
+
 	
+	testL2.popfront();
+	testL2.popfront();
+	testL2.popfront();
 }
 
 TEST(list_test, clear_dyn_mem_test) {

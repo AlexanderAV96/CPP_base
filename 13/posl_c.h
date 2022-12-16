@@ -26,9 +26,9 @@ public:
    
     void erase(size_t location) ;//+
 
-    int get_capacity() const { return capacity; };//+
+    size_t get_capacity() const { return capacity; };//+
 
-    int get_size() const { return size; };//+
+    size_t get_size() const { return size; };//+
 
     void set_capacity(size_t capacity) { this->capacity = capacity; };//+
 
@@ -45,10 +45,10 @@ public:
         this->size = new_size;
         arr = new T[new_size];
 
-
-        for (int i = 0; i < size; i++) {
+        // !!!!!!!!!!!!! auto prostavlinei int znachenii
+       /* for (int i = 0; i < size; i++) {
            arr[i]=i;
-        }
+        }*/
         posl_count++;
      };
     ~p_cont() {

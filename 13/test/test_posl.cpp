@@ -9,7 +9,7 @@ TEST(posl_test, push_back_non_INT_test) {
 	testV.pushback('r');
 
 	EXPECT_EQ(testV[(testV.get_size()-1)], 'r');
-	EXPECT_TRUE(true);
+	
 	
 }
 TEST(posl_test, push_begin_test) {
@@ -22,7 +22,7 @@ TEST(posl_test, push_begin_test) {
 
 
 	EXPECT_EQ(testV[0], 40);
-	EXPECT_TRUE(true);
+	
 
 	
 }
@@ -36,9 +36,9 @@ TEST(posl_test, push_middle_list) {
 	testV.insert(40,(testV.get_size()/2+1));
 
 	EXPECT_EQ(testV[6], 40);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(testV.get_size(), 13);
-	EXPECT_TRUE(true);
+	
 
 	
 
@@ -54,9 +54,9 @@ TEST(posl_test, pop_end_test) {
 	testV.erase(12);
 
 	EXPECT_EQ(testV.get_size(), 11);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(testV[10], 10);
-	EXPECT_TRUE(true);
+	
 
 	
 }
@@ -74,9 +74,9 @@ TEST(posl_test, pop_begin_test) {
 	testV.erase(1);
 
 	EXPECT_EQ(testV.get_size(), 12);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(testV[0], 22);
-	EXPECT_TRUE(true);
+	
 
 	
 }
@@ -91,9 +91,9 @@ TEST(posl_test, pop_middle_test) {
 	testV.erase(12);
 
 	EXPECT_EQ(testV.get_size(), 12);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(testV[11], 30);
-	EXPECT_TRUE(true);
+	
 
 	
 }
@@ -107,7 +107,7 @@ TEST(posl_test, get_size_test) {
 
 
 	EXPECT_EQ(testV.get_size(), 13);
-	EXPECT_TRUE(true);
+	
 
 	
 }
@@ -122,7 +122,7 @@ TEST(posl_test, get_data_test) {
 
 
 	EXPECT_EQ(testV[11], 20);
-	EXPECT_TRUE(true);
+	
 
 	
 }
@@ -138,19 +138,46 @@ TEST(posl_test, constr_copy) {
 	testV2 = testV;
 
 	EXPECT_EQ(testV[0], testV2[0]);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(testV[1], testV2[1]);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(testV[2], testV2[2]);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(testV[3], testV2[3]);
-	EXPECT_TRUE(true);
+	
 }
 TEST(posl_test, clear_dyn_mem_test) {
 	
 
-	EXPECT_EQ(posl_count, 0);
-	EXPECT_TRUE(true);
+	static int delet_count = 1;// MyStruct a - budet udelen posle zavershenia programmi
+
+	struct MyStruct
+	{
+		int xxxx = 1;
+		~MyStruct() {
+
+			delet_count--;
+		}
+
+		MyStruct() {
+
+			delet_count++;
+		}
+	};
+	{
+		MyStruct a;
+		size_t size = 1;
+		p_cont <MyStruct> testV(size);
+		testV.pushback(a);
+		testV.erase(1);
+	}
+	
+	
+	
+	
+	
+	EXPECT_EQ(delet_count, 0);
+	
 
 
 }

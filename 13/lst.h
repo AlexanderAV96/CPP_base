@@ -3,7 +3,7 @@
 #include <iostream>
 using std::cout;
 
-static int lst_count = 0;
+//static int lst_count = 0;
 
 template<typename V>
 class MyList
@@ -91,7 +91,7 @@ public:
 		
 	~MyList() {
 		while (size) {
-			popfront(); lst_count--;
+			popfront(); 
 	} };
 
 private:

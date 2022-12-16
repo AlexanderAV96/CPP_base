@@ -8,8 +8,7 @@ TEST(list_test, push_back_non_INT_test) {
 	test.pushback('r');
 
 	EXPECT_EQ(test[0], 'r');
-	EXPECT_TRUE(true);
-	test.popfront();
+	
 }
 TEST(list_test, push_back_test) {
 
@@ -17,9 +16,7 @@ TEST(list_test, push_back_test) {
 	test.pushback(0);
 
 	EXPECT_EQ(test[0], 0);
-	EXPECT_TRUE(true);
-
-	test.popfront();
+	
 }
 
 
@@ -30,11 +27,7 @@ TEST(list_test, push_begin_test) {
 	test.pushfront(0);
 
 	EXPECT_EQ(test[0], 0);
-	EXPECT_TRUE(true);
-
-	test.popfront();
-	test.popfront();
-	test.popfront();
+	
 }
 
 
@@ -47,14 +40,9 @@ TEST(list_test, push_middle_list) {
 	test.insert(22, 2);
 
 	EXPECT_EQ(test[1], 22);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(test.getsize(), 3);
-	EXPECT_TRUE(true);
-
-	test.popfront();
-	test.popfront();
-	test.popfront();
-
+	
 }
 
 
@@ -66,11 +54,9 @@ TEST(list_test, pop_end_test) {
 	test.remove(2);
 
 	EXPECT_EQ(test.getsize(), 1);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(test[0], 5);
-	EXPECT_TRUE(true);
-
-	test.popfront();
+	
 }
 
 
@@ -84,11 +70,9 @@ TEST(list_test, pop_begin_test) {
 	test.popfront();
 
 	EXPECT_EQ(test.getsize(), 1);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(test[0], 10);
-	EXPECT_TRUE(true);
-
-	test.popfront();
+	
 }
 
 
@@ -100,12 +84,9 @@ TEST(list_test, pop_middle_test) {
 	test.remove(2);
 
 	EXPECT_EQ(test.getsize(), 2);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(test[1], 0);
-	EXPECT_TRUE(true);
-
-	test.popfront();
-	test.popfront();
+	
 }
 
 TEST(list_test, get_size_test) {
@@ -116,11 +97,7 @@ TEST(list_test, get_size_test) {
 
 
 	EXPECT_EQ(test.getsize(), 3);
-	EXPECT_TRUE(true);
-
-	test.popfront();
-	test.popfront();
-	test.popfront();
+	
 }
 TEST(list_test, get_data_test) {
 	MyList <int> test;
@@ -131,11 +108,7 @@ TEST(list_test, get_data_test) {
 
 
 	EXPECT_EQ(test[1], 1);
-	EXPECT_TRUE(true);
-
-	test.popfront();
-	test.popfront();
-	test.popfront();
+	
 }
 
 TEST(list_test, copy_const__test) {
@@ -152,27 +125,40 @@ TEST(list_test, copy_const__test) {
 
 
 	EXPECT_EQ(testL[0], testL[0]);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(testL[1], testL[1]);
-	EXPECT_TRUE(true);
+	
 	EXPECT_EQ(testL[2], testL[2]);
-	EXPECT_TRUE(true);
-
-	testL.popfront();
-	testL.popfront();
-	testL.popfront();
+	
 
 	
-	testL2.popfront();
-	testL2.popfront();
-	testL2.popfront();
 }
 
 TEST(list_test, clear_dyn_mem_test) {
 
+	static int delet_count = 1;// MyStruct a - budet udelen posle zavershenia programmi
 
-	EXPECT_EQ(lst_count, 0);
-	EXPECT_TRUE(true);
+	struct MyStruct
+	{
+
+		~MyStruct() {
+
+			delet_count--;
+		}
+
+		MyStruct() {
+
+			delet_count++;
+		}
+	};
+
+	MyStruct a;
+	MyList <MyStruct> testL;
+	testL.pushback(a);
+	testL.popfront();
+
+	EXPECT_EQ(delet_count, 0);
+	
 
 
 }

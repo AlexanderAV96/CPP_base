@@ -1,4 +1,6 @@
-﻿#include <algorithm>
+﻿// Read files and prints top k word by frequency
+
+#include <algorithm>
 #include <cctype>
 #include <cstdlib>
 #include <fstream>
@@ -9,10 +11,9 @@
 #include <vector>
 #include <chrono>
 #include <thread>
-#include <execution>
-#include <sstream>
+#include <mutex>
 
-
+std::mutex mtx;//!!!!!!!
 
 const size_t TOPK = 10;
 
@@ -20,11 +21,9 @@ using Counter = std::map<std::string, std::size_t>;
 
 std::string tolower(const std::string& str);
 
-void count_words(std::string& stream, Counter&);
+void count_words(std::istream& stream, Counter&);
 
 void print_topk(std::ostream& stream, const Counter&, const size_t k);
-
-std::mutex m;
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -32,44 +31,37 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    size_t nthreads = std::thread::hardware_concurrency();//!!!!
-    if (!nthreads) { nthreads = 1; }//!!!!
-
-
-   /* std::transform(std::execution::par, workVec.begin(), workVec.end(),
-        workVec.begin(),
-        [](double arg) { return std::tan(arg); });*/
-
-
-
-
     auto start = std::chrono::high_resolution_clock::now();
     Counter freq_dict;
+
+    
+   
+
     for (int i = 1; i < argc; ++i) {
+        
+        
+        
         std::ifstream input{ argv[i] };
+        
+
+        
         if (!input.is_open()) {
             std::cerr << "Failed to open file " << argv[i] << '\n';
             return EXIT_FAILURE;
         }
+       
+        if (i == 1) { std::thread pro(count_words, ref(input), ref(freq_dict));i++;pro.join(); }
         
-        std::stringstream ss;
-        while (input) {
-            ss.put(input.get());
-                      }
-        std::string str;
-        ss.str(str);
-
-        count_words(str, freq_dict);//!!!
-        //count_words(input, freq_dict);
+        else
+        count_words(input, freq_dict);
     }
-
-    
-
 
     print_topk(std::cout, freq_dict, TOPK);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    std::cout << "Elapsed time is " << elapsed_ms.count() << " ms\n";
+
+    
+    std::cout << "Elapsed time is " << elapsed_ms.count() << " us\n";
 }
 
 std::string tolower(const std::string& str) {
@@ -80,35 +72,10 @@ std::string tolower(const std::string& str) {
     return lower_str;
 };
 
-void count_words(std::string& str, Counter& counter)  {
-  
-   
-    /// !!!!!!!!!!! popitka sdelat forward dlya string, kak opredilit i ispolzovat ne izvestno
-    //// std::string::iterator ::iterator_category::bidirectional_iterator_tag bi ;
-    
-   
-    
-    
-
-
-    /// !!!! 3333333 oshibka c2664
-    std::for_each( str.begin(), str.end(),
-        
-        [&counter](const std::string& s) mutable { ++counter[tolower(s)]; });
-
-
-
-    ///// 222222 oshibka forward iterator
-    //   std::for_each(std::execution::par, std::istream_iterator<std::string>(stream),
-    //    std::istream_iterator<std::string>(),
-    //    [&counter](const std::string& s) {std::lock_guard<std::mutex> guard(m); ++counter[tolower(s)]; });
-    //
-   
-
-    /// nachalnii variant
-   /* std::for_each(std::istream_iterator<std::string>(stream),
+void count_words(std::istream& stream, Counter& counter) {
+    std::for_each(std::istream_iterator<std::string>(stream),
         std::istream_iterator<std::string>(),
-        [&counter](const std::string& s) { ++counter[tolower(s)]; });*/
+        [&counter](const std::string& s) { mtx.lock(); ++counter[tolower(s)];mtx.unlock(); });
 }
 
 void print_topk(std::ostream& stream, const Counter& counter, const size_t k) {
@@ -118,11 +85,11 @@ void print_topk(std::ostream& stream, const Counter& counter, const size_t k) {
         words.push_back(it);
     }
 
-    std::partial_sort( std::execution::par,
+    std::partial_sort(
         std::begin(words), std::begin(words) + k, std::end(words),
-        [](auto lhs, auto& rhs) { std::lock_guard<std::mutex> guard(m); return lhs->second > rhs->second; });
+        [](auto lhs, auto& rhs) { return lhs->second > rhs->second; });
 
-    std::for_each( 
+    std::for_each(
         std::begin(words), std::begin(words) + k,
         [&stream](const Counter::const_iterator& pair) {
             stream << std::setw(4) << pair->second << " " << pair->first

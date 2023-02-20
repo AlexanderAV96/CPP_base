@@ -53,24 +53,24 @@ int main(int argc, char* argv[]) {
         }
 
 
-                                            // ggggg.push_back(std::async(count_words, ref(input), ref(freq_dict)));// ne podhodit metod void
-                                            // ggggg.push_back(std::thread(std::move(count_words),ref(input), ref(freq_dict)));
+                                                        // ggggg.push_back(std::async(count_words, ref(input), ref(freq_dict)));// ne podhodit metod void
+                                                        // ggggg.push_back(std::thread(std::move(count_words),ref(input), ref(freq_dict)));
 
-                                            // book[i].join();
+                                                        // book[i].join();
 
-                                           // book.emplace_back(std::async(std::launch::async, count_words, ref(input), ref(freq_dict)));
-                                            /*if (i == 1){ std::thread pro1(count_words, ref(input), ref(freq_dict)); pro1.join();
-                                        }
-                                            if (i == 2) { std::thread pro2(count_words, ref(input), ref(freq_dict)); pro2.join(); }
-                                            if (i == 3) { std::thread pro3(count_words, ref(input), ref(freq_dict));pro3.join(); }*/
-                                            //book.push_back(std::async(count_words, ref(input),ref(freq_dict)));
-                                           // else
+                                                       // book.emplace_back(std::async(std::launch::async, count_words, ref(input), ref(freq_dict)));
+                                                        /*if (i == 1){ std::thread pro1(count_words, ref(input), ref(freq_dict)); pro1.join();
+                                                    }
+                                                        if (i == 2) { std::thread pro2(count_words, ref(input), ref(freq_dict)); pro2.join(); }
+                                                        if (i == 3) { std::thread pro3(count_words, ref(input), ref(freq_dict));pro3.join(); }*/
+                                                        //book.push_back(std::async(count_words, ref(input),ref(freq_dict)));
+                                                       // else
 
 
         
          ggggg.push_back(std::thread(std::move(count_words), ref(input), ref(freq_dict)));
          ggggg[i-1].join();
-                                            //count_words(input, freq_dict);
+                                                     //count_words(input, freq_dict);
     }
    
     
@@ -80,10 +80,10 @@ int main(int argc, char* argv[]) {
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     std::cout << std::this_thread::get_id() << "end"<<'\n';
     
-                                                /*{
-                                                    std::lock_guard<std::mutex> guard2(mtx2);
-                                                    for (int i = 0;i < ggggg.size();++i) ggggg[i].join();
-                                                }*/
+                                                        /*{
+                                                            std::lock_guard<std::mutex> guard2(mtx2);
+                                                            for (int i = 0;i < ggggg.size();++i) ggggg[i].join();
+                                                        }*/
 
     std::cout << "Elapsed time is " << elapsed_ms.count() << " us\n";
 }

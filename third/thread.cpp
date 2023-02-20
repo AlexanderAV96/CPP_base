@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
     Counter freq_dict;
                                     //std::vector< std::future<void>> book;
     std::vector<std::thread> ggggg;
-                                    //std::vector<std::future<size_t>> tasks;
+    std::vector< std::ifstream> book;                                //std::vector<std::future<size_t>> tasks;
 
     for (int i = 1; i < argc; ++i) {
 
@@ -52,6 +52,7 @@ int main(int argc, char* argv[]) {
             return EXIT_FAILURE;
         }
 
+        book.emplace_back(std::move(input));
 
                                                         // ggggg.push_back(std::async(count_words, ref(input), ref(freq_dict)));// ne podhodit metod void
                                                         // ggggg.push_back(std::thread(std::move(count_words),ref(input), ref(freq_dict)));
@@ -66,14 +67,16 @@ int main(int argc, char* argv[]) {
                                                         //book.push_back(std::async(count_words, ref(input),ref(freq_dict)));
                                                        // else
 
+         int place = (book.size() - 1);
 
+         book[place].rdbuf();//proverka popadadet li chto to v vector
         
-         ggggg.push_back(std::thread(std::move(count_words), ref(input), ref(freq_dict)));
+         ggggg.push_back(std::thread(std::move(count_words), (ref(book[place])), ref(freq_dict)));//ggggg.push_back(std::thread(std::move(count_words), ref(input), ref(freq_dict)));
          ggggg[i-1].join();
                                                      //count_words(input, freq_dict);
     }
    
-    
+   // for (int i = 0; i < ggggg.size() - 1;i++) ggggg[i].join();
 
     print_topk(std::cout, freq_dict, TOPK);
     auto end = std::chrono::high_resolution_clock::now();

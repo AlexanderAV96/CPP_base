@@ -13,6 +13,7 @@
 #include <thread>
 #include <mutex>
 #include <future>
+#include <cstdio>
 
 std::mutex mtx, mtx2;//!!!!!!!
 
@@ -35,16 +36,16 @@ int main(int argc, char* argv[]) {
 
     auto start = std::chrono::high_resolution_clock::now();
     Counter freq_dict;
-                                    //std::vector< std::future<void>> book;
+    std::vector< std::ifstream> book;
     std::vector<std::thread> ggggg;
-    std::vector< std::ifstream> book;                                //std::vector<std::future<size_t>> tasks;
+                                    //std::vector<std::future<size_t>> tasks;
 
     for (int i = 1; i < argc; ++i) {
 
 
 
         std::ifstream input{ argv[i] };
-
+        
 
 
         if (!input.is_open()) {
@@ -52,8 +53,9 @@ int main(int argc, char* argv[]) {
             return EXIT_FAILURE;
         }
 
+        
+        std::cout << input.rdbuf();
         book.emplace_back(std::move(input));
-
                                                         // ggggg.push_back(std::async(count_words, ref(input), ref(freq_dict)));// ne podhodit metod void
                                                         // ggggg.push_back(std::thread(std::move(count_words),ref(input), ref(freq_dict)));
 
@@ -66,17 +68,18 @@ int main(int argc, char* argv[]) {
                                                         if (i == 3) { std::thread pro3(count_words, ref(input), ref(freq_dict));pro3.join(); }*/
                                                         //book.push_back(std::async(count_words, ref(input),ref(freq_dict)));
                                                        // else
-
-         int place = (book.size() - 1);
-
-         book[place].rdbuf();//proverka popadadet li chto to v vector
-        
-         ggggg.push_back(std::thread(std::move(count_words), (ref(book[place])), ref(freq_dict)));//ggggg.push_back(std::thread(std::move(count_words), ref(input), ref(freq_dict)));
-         ggggg[i-1].join();
+        int place = (book.size() - 1);
+        book[place].rdbuf();
+        if(i<1) std::cout << book[place-1].rdbuf();
+        ggggg.push_back(std::thread(std::move(count_words), (ref(book[place])), ref(freq_dict)));
+         //ggggg.push_back(std::thread(std::move(count_words), std::move(ref(input)), ref(freq_dict)));
+       // ggggg[i-1].join();
                                                      //count_words(input, freq_dict);
     }
    
-   // for (int i = 0; i < ggggg.size() - 1;i++) ggggg[i].join();
+    for (int i=0; i<ggggg.size()-1;i++) ggggg[i ].join();
+
+
 
     print_topk(std::cout, freq_dict, TOPK);
     auto end = std::chrono::high_resolution_clock::now();
@@ -100,9 +103,10 @@ std::string tolower(const std::string& str) {
 };
 
 void count_words(std::istream& stream, Counter& counter) {
-    
+    std::cout << stream.rdbuf();
 
     std::cout << std::this_thread::get_id() << '\n';
+
         std::for_each(std::istream_iterator<std::string>(stream),
         std::istream_iterator<std::string>(),
             [&counter](const std::string& s) { std::mutex mtx; std::lock_guard guard(mtx); ++counter[tolower(s)]; });

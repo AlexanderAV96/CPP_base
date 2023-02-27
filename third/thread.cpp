@@ -38,6 +38,7 @@ int main(int argc, char* argv[]) {
     Counter freq_dict;
     std::vector< std::ifstream*> book;
     std::vector<std::thread> ggggg;
+    std::vector <std::unique_ptr<std::ifstream>> ptr;
                                                                     // std::vector<std::unique_ptr<std::vector<std::ifstream *>>> ptr;
 
     for (int i = 1; i < argc; ++i) {
@@ -56,10 +57,12 @@ int main(int argc, char* argv[]) {
         
 
                                                             // std::cout << input.rdbuf();// proveryem schitivanie
+       book.emplace_back(std::move(input));
+        std::istream* ptr2 = book.back();
+        ptr.push_back(std::make_unique<std::ifstream>(ptr2));
         
-        
-        std::ifstream* ptr = &input;
-        book.emplace_back((ptr));
+                                                        //    std::ifstream* ptr = &input;
+                                                         //   book.emplace_back((ptr));
                                                           // ptr.emplace_back((book.back()));
 
 
@@ -85,7 +88,7 @@ int main(int argc, char* argv[]) {
                                                        //book.back().seekg(0, std::ios_base::beg);
                                                        //std::cout << book.back().rdbuf();//schitivaem iz vectora
                                                        // if(i<1) std::cout << book[place-1].rdbuf();
-        ggggg.push_back(std::thread(std::move(count_words), (std::move(book.back())), ref(freq_dict)));
+        ggggg.push_back(std::thread(std::move(count_words), ptr.back().release(), ref(freq_dict)));
                                                          //ggggg.push_back(std::thread(std::move(count_words), std::move(ref(input)), ref(freq_dict)));
                                                        // ggggg[i-1].join();
                                                      //count_words(input, freq_dict);
@@ -117,7 +120,7 @@ std::string tolower(const std::string& str) {
 };
 
 void count_words(std::istream& stream, Counter& counter) {
-                                             // std::cout << stream.rdbuf();
+   // std::cout << stream.rdbuf();
 
     std::cout << std::this_thread::get_id() << '\n';
 

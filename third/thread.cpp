@@ -38,8 +38,12 @@ int main(int argc, char* argv[]) {
     for (int i = 1; i < argc; ++i) {
       
         
-        std::ifstream input{ argv[i] };
-        if (!input.is_open()) {
+                                    //  std::ifstream input{ argv[i] };
+
+        ptr.emplace_back(std::make_unique<std::ifstream>((argv[i])));
+
+        
+        if (!ptr.back().get()->is_open()) {
             std::cerr << "Failed to open file " << argv[i] << '\n';
             return EXIT_FAILURE;
         }
@@ -47,16 +51,16 @@ int main(int argc, char* argv[]) {
                                     /// rabotaet v odinochnom
                                   //  thr.emplace_back(count_words, ref(input), ref(freq_dict));
                                   //  thr[i - 1].join();
-                                    ///
+                                  ///
         
-        ptr.emplace_back(std::make_unique<std::ifstream>((input)));
+                                  // ptr.emplace_back(std::make_unique<std::ifstream>((argv[i])));
         
                                  //  std::thread th(count_words, ref(str.back()), ref(freq_dict));
         
-        thr.emplace_back(count_words, std::move(ptr.back()), ref(freq_dict));
+        thr.emplace_back(count_words, (ptr.back().get()), ref(freq_dict));
        
                                  // thr[i-1].join();
-
+        
 
 
 

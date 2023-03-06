@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
       //  count_words(input, freq_dict);
     }
     //////////////////////////////////////
-                                    // for (int i = 0; i < thr.size() - 1;i++) thr[i].join();
+    for (int i = 0; i < thr.size() - 1;i++) thr[i].join();
 
 
     ////////////////////////////

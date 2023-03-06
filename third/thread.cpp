@@ -10,6 +10,7 @@
 #include <vector>
 #include <chrono>
 #include <mutex>
+#include <future>
 
 const size_t TOPK = 10;
 
@@ -32,6 +33,8 @@ int main(int argc, char* argv[]) {
     std::vector<std::thread> thr;
     std::vector<std::ifstream> str;
     std::vector <std::unique_ptr<std::ifstream>> ptr;
+    std::vector<std::future <std::ifstream>> thr1;
+
 
     auto start = std::chrono::high_resolution_clock::now();
     Counter freq_dict;
@@ -62,9 +65,9 @@ int main(int argc, char* argv[]) {
                                  // thr[i-1].join();
         
 
+      //  thr1.emplace_back(std::launch::async, count_words, (ptr.back().get()), ref(freq_dict))
 
-
-
+       
         
        
 ////////////////////////////////////////////////
@@ -90,9 +93,12 @@ std::string tolower(const std::string& str) {
 };
 
 void count_words(std::istream* stream, Counter& counter) {
+   
+    
     std::for_each(std::istream_iterator<std::string>(*stream),
         std::istream_iterator<std::string>(),
-        [&counter](const std::string& s) { std::mutex mtx; std::lock_guard guard(mtx);++counter[tolower(s)]; });
+        [&counter](const std::string& s) { std::lock_guard guard(mtx);++counter[tolower(s)]; });
+    
 }
 
 void print_topk(std::ostream& stream, const Counter& counter, const size_t k) {

@@ -18,7 +18,7 @@ using Counter = std::map<std::string, std::size_t>;
 
 std::string tolower(const std::string& str);
 
-void count_words(std::istream* stream, Counter&);
+void count_words(std::istream *stream, Counter&);
 
 void print_topk(std::ostream& stream, const Counter&, const size_t k);
 
@@ -41,11 +41,11 @@ int main(int argc, char* argv[]) {
     for (int i = 1; i < argc; ++i) {
       
         
-                                    //  std::ifstream input{ argv[i] };
+          // std::ifstream input{ argv[i] };
 
         ptr.emplace_back(std::make_unique<std::ifstream>((argv[i])));
 
-        
+      //   if (!input.is_open()) {
         if (!ptr.back().get()->is_open()) {
             std::cerr << "Failed to open file " << argv[i] << '\n';
             return EXIT_FAILURE;
@@ -71,10 +71,10 @@ int main(int argc, char* argv[]) {
         
        
 ////////////////////////////////////////////////
-      //  count_words(input, freq_dict);
+      // count_words(input, freq_dict);
     }
     //////////////////////////////////////
-    for (int i = 0; i < thr.size() - 1;i++) thr[i].join();
+     for (auto& i : thr) i.join();
 
 
     ////////////////////////////
@@ -92,7 +92,7 @@ std::string tolower(const std::string& str) {
     return lower_str;
 };
 
-void count_words(std::istream* stream, Counter& counter) {
+void count_words(std::istream *stream, Counter& counter) {
    
     
     std::for_each(std::istream_iterator<std::string>(*stream),

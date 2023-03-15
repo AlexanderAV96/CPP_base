@@ -40,6 +40,8 @@ int main(int argc, char* argv[]) {
     auto start = std::chrono::high_resolution_clock::now();
     Counter freq_dict;
 
+    counvec.reserve( argc -1);
+    
 
     for (int i = 1; i < argc; ++i) {
       
@@ -52,11 +54,10 @@ int main(int argc, char* argv[]) {
             std::cerr << "Failed to open file " << argv[i] << '\n';
             return EXIT_FAILURE;
         }
-                                           //    counvec.emplace_back( );
-                                           // counptr.emplace_back( std::make_unique<Counter>( counvec.back( ) ));
-                                           // counvec.push_back((freq_dict));
-        thr2.emplace_back( std::async( std::launch::async , count_words , ( ptr.back( ).get( ) ) , ref ( counvec.back( ) )) );
-
+                                           
+        counvec.emplace_back((freq_dict));
+        thr2.emplace_back( std::async( std::launch::async , count_words , ( ptr.back( ).get( ) ) , ref ( counvec .back() )) );
+        
     }
    
 
